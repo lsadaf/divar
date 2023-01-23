@@ -1,10 +1,12 @@
 import Exceptions.EmailInvalidException;
+import Exceptions.LoginFailedException;
 import Exceptions.PasswordInvalidException;
 import Exceptions.UsernameInvalidException;
 import com.google.gson.Gson;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.regex.*;
 
 public class User {
@@ -12,6 +14,9 @@ public class User {
     private String password;
     private String email;
     private URL picture;
+    private String name;
+    private String lastName;
+    private long phoneNumber;
 
     //setters and getters
     public void setUsername(String username) {
@@ -46,7 +51,31 @@ public class User {
         return email;
     }
 
-    public User(String username,String password,String email) throws Exception {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setPhoneNumber(long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public User(String username, String password, String email) throws Exception {
         Pattern p1 = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
         Matcher m1 = p1.matcher(email);
@@ -78,12 +107,13 @@ public class User {
         this.password = password;
         this.email = email;
     }
-    public static void Login(String username,String password){
+    public static User Login(String username,String password) throws LoginFailedException {
         for (int i = 0; i < DataBase.getUsers().size(); i++) {
-            if (DataBase.getUsers().get(i).getUsername().equals(username)){
-
+            if (DataBase.getUsers().get(i).getUsername().equals(username) && DataBase.getUsers().get(i).getPassword().equals(password) ){
+                return DataBase.getUsers().get(i);
             }
         }
+        throw new LoginFailedException("Login failed!");
     }
 
     public String toJson() {
@@ -95,16 +125,19 @@ public class User {
     }
 
     public void Profile(){
-        JUI.clearScreen();
-        JUI.changeBackgroundColor(JUI.Colors.WHITE);
-        JUI.changeColor(JUI.Colors.BOLD_BLACK);
-        System.out.println("Profile: ");
-        System.out.println("Profile picture: " + picture);
-        JUI.changeColor(JUI.Colors.BLACK);
-        System.out.println("Name: ");
-        System.out.println("Last name: ");
-        System.out.println("Username: " + username);
-        System.out.println("Email: " + email);
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username) && email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, email);
     }
 }

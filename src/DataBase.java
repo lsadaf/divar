@@ -35,8 +35,9 @@ public class DataBase {
 
     public static void addUser(User user) {
         ArrayList<User> users = getUsers();
-        if (!users.contains(user))
+        if (!users.contains(user)){
             users.add(user);
+        }else
         saveUsers(users);
     }
 
