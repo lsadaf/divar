@@ -123,11 +123,6 @@ public class User {
     public static User fromJson(String json) {
         return new Gson().fromJson(json, User.class);
     }
-
-    public void profile(){
-
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

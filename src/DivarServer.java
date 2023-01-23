@@ -1,9 +1,6 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class DivarServer implements Runnable {
     private final int port;
 
@@ -41,13 +38,29 @@ class DivarRunnable implements Runnable{
             String response = "";
             message = in.readUTF();
             System.out.println("i got " + message);
-            if (message.equals("salam")) response = "khodahafez";
-            else response = "salam";
-
+            if (message.startsWith("LOGIN=")){
+                if (message.contains(",")){
+                    String[] st = message.split("=")[1].split(",");
+                    String username = st[0];
+                    String password = st[1];
+                    User.login(username,password);
+                }
+            }else if (message.startsWith("SIGNUP=")) {
+                if (message.contains(",")) {
+                    String[] st = message.split("=")[1].split(",");
+                    String username = st[0];
+                    String password = st[1];
+                    String email = st[2];
+                    new User(username, password, email);
+                    User.login(username,password);
+                }
+            }else if (message.startsWith("PROFILE")){
+                //todo
+            }
             out.writeUTF(response);
             out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }
