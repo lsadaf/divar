@@ -1,3 +1,5 @@
+import Exceptions.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -33,11 +35,11 @@ public class DataBase {
         return users;
     }
 
-    public static void addUser(User user) {
+    public static void addUser(User user) throws UserAlreadyExists {
         ArrayList<User> users = getUsers();
         if (!users.contains(user)){
             users.add(user);
-        }else
+        }else throw new UserAlreadyExists("User already exists!");
         saveUsers(users);
     }
 

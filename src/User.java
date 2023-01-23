@@ -107,7 +107,7 @@ public class User {
         this.password = password;
         this.email = email;
     }
-    public static User Login(String username,String password) throws LoginFailedException {
+    public static User login(String username,String password) throws LoginFailedException {
         for (int i = 0; i < DataBase.getUsers().size(); i++) {
             if (DataBase.getUsers().get(i).getUsername().equals(username) && DataBase.getUsers().get(i).getPassword().equals(password) ){
                 return DataBase.getUsers().get(i);
@@ -124,7 +124,7 @@ public class User {
         return new Gson().fromJson(json, User.class);
     }
 
-    public void Profile(){
+    public void profile(){
 
     }
 
@@ -133,7 +133,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return username.equals(user.username) && email.equals(user.email);
+        return username.equals(user.username) || email.equals(user.email);
     }
 
     @Override
