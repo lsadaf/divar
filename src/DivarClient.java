@@ -14,8 +14,8 @@ public class DivarClient {
 //        System.out.println(response);
 //        dos.close();
 //        socket.close();
-          User foad = new User("sadaf.aghili", "123aaxsdsds", "sadafaghili@gmail.com");
-          DataBase.addUser(foad);
+          User sadaf = new User("sadaf.aghili", "123aaxsdsds", "sadafaghili@gmail.com");
+          DataBase.addUser(sadaf);
           System.out.println(DataBase.getUsers().get(0).getUsername());
           System.out.println(DataBase.getUsers().get(0).getPassword());
           System.out.println(DataBase.getUsers().get(0).getEmail());
