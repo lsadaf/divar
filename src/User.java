@@ -1,10 +1,12 @@
 import Exceptions.EmailInvalidException;
 import Exceptions.PasswordInvalidException;
 import Exceptions.UsernameInvalidException;
+import com.google.gson.Gson;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.*;
+
 public class User {
     private String username;
     private String password;
@@ -44,15 +46,11 @@ public class User {
         return email;
     }
 
-    public User(String username, String password, String email){
-        setUsername(username);
-        setPassword(password);
-    }
-    public static void SignUp(String username,String password,String email) throws Exception {
+    public User(String username,String password,String email) throws Exception {
         Pattern p1 = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
         Matcher m1 = p1.matcher(email);
-        Pattern p2 = Pattern.compile("^[a-zA-Z0-9_.]{5,}$");
+        Pattern p2 = Pattern.compile("^[a-zA-Z0-9._]{4,}$");
         Matcher m2 = p2.matcher(username);
         Pattern p3 = Pattern.compile("");
         Matcher m3 = p3.matcher(password);
@@ -66,22 +64,36 @@ public class User {
         if (checkA>=2 && m3.find()){
             passCheck = true;
         }
-        if (m1.find() && m2.find() && passCheck){ //file
-            new User(username,password,email);
-        }
-        if (!m2.find()){
-            throw new UsernameInvalidException("Username Invalid!");
-        }
-        if (!passCheck){
-            throw new PasswordInvalidException("Password Invalid!");
-        }
-        if (!m1.find()){
-            throw new EmailInvalidException("Email Invalid!");
-        }
+
+           if (!m1.find()) {
+               throw new EmailInvalidException("Email Invalid!");
+           }
+           if (!m2.find()) {
+               throw new UsernameInvalidException("Username Invalid!");
+           }
+           if (!passCheck) {
+               throw new PasswordInvalidException("Password Invalid!");
+           }
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
     public static void Login(String username,String password){
-        //if ()
+        for (int i = 0; i < DataBase.getUsers().size(); i++) {
+            if (DataBase.getUsers().get(i).getUsername().equals(username)){
+
+            }
+        }
     }
+
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
+    public static User fromJson(String json) {
+        return new Gson().fromJson(json, User.class);
+    }
+
     public void Profile(){
         JUI.clearScreen();
         JUI.changeBackgroundColor(JUI.Colors.WHITE);
