@@ -1,3 +1,5 @@
+package DataTypes;
+
 import Exceptions.EmailInvalidException;
 import Exceptions.LoginFailedException;
 import Exceptions.PasswordInvalidException;
