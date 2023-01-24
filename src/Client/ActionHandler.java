@@ -5,6 +5,7 @@ import Communication.RequestPacket;
 import Communication.RequestType;
 import Communication.ResponsePacket;
 import DataTypes.Advertisement;
+import Server.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,10 +22,12 @@ public class ActionHandler {
     ObjectOutputStream objectOutputStream;
 
     public ActionHandler(Socket inputSocket) throws IOException {
-        socket = inputSocket;
+        new Thread(new Server(inputSocket.getPort())).start();
+
         objectInputStream = new ObjectInputStream(socket.getInputStream());
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         scanner = new Scanner(System.in);
+
     }
 
     public void start (){
