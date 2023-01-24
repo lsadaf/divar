@@ -1,17 +1,9 @@
 package Client;
 
-import CLI.ClearScreen;
 import CLI.Colors;
-import DataTypes.Advertisement;
-import com.sun.jdi.ArrayReference;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Main {
     public static Socket socket;

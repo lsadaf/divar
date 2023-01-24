@@ -45,7 +45,7 @@ public class ActionHandler {
 
     public void printMenu (){
         int input;
-        ClearScreen.clearScreen();
+        JUI.clearScreen();
         while (true){
             System.out.print("1. PROFILE\n2. ADVERTISEMENT\n3. EXIT\n>> ");
             input = scanner.nextInt();
@@ -58,13 +58,13 @@ public class ActionHandler {
                 advertisementMenu();
             }
             else if ( input == 3){
-                ClearScreen.clearScreen();
+                JUI.clearScreen();
                 System.out.println(Colors.colorPrint(Colors.GREEN, "Good luck!"));
                 return;
 
             }
             else{
-                ClearScreen.clearScreen();
+                JUI.clearScreen();
                 System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
 
             }
@@ -73,11 +73,12 @@ public class ActionHandler {
     }
     public void advertisementMenu (){
         int input;
-        ClearScreen.clearScreen();
         while(true){
+            JUI.clearScreen();
             System.out.print("1. ADVERTISEMENT LIST\n2. ADD NEW ADVERTISEMENT\n3. BACK\n>> ");
             input = scanner.nextInt();
             scanner.nextLine();
+            JUI.clearScreen();
             if ( input == 1){
                     RequestPacket requestPacket = new RequestPacket(RequestType.GET_ALL_ADS, null);
                     sendRequest(requestPacket);
@@ -92,7 +93,7 @@ public class ActionHandler {
                     scanner.nextLine();
                     if ( input1 == 1){
                         while (true){
-                            ClearScreen.clearScreen();
+                            JUI.clearScreen();
                             System.out.print("SORT\n-----------\n1. BY PRICE\n2. BY UPDATE DATE\n3. BACK\n>> ");
                             int input2 = scanner.nextInt();
                             scanner.nextLine();
@@ -100,7 +101,7 @@ public class ActionHandler {
                                 System.out.print("1. ASCENDING\n2. DESCENDING\n>> ");
                                 int input3 = scanner.nextInt();
                                 scanner.nextLine();
-                                ClearScreen.clearScreen();
+                                JUI.clearScreen();
                                 if ( input3 == 1){
                                     PrintLists.printSortedByPrice(adList, true);
                                     break;
@@ -111,12 +112,12 @@ public class ActionHandler {
                                 }
                             }
                             else if ( input2 == 2){
-                                ClearScreen.clearScreen();
+                                JUI.clearScreen();
                                 PrintLists.printAdByUploadDate(adList);
                                 break;
                             }
                             else if ( input2 == 3){
-                                ClearScreen.clearScreen();
+                                JUI.clearScreen();
                                 PrintLists.printAllAdList(adList);
                                 break;
                             }
@@ -124,35 +125,35 @@ public class ActionHandler {
 
                     }
                     else if ( input1 == 2){
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         System.out.print("PRICE RANGE\n" + Colors.colorPrint(Colors.CYAN, "-----------") + "\nENTER PRICE 1\n>> ");
                         int num1 = scanner.nextInt();
                         scanner.nextLine();
                         System.out.print("ENTER PRICE 2\n>> ");
                         int num2 = scanner.nextInt();
                         scanner.nextLine();
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         PrintLists.printAdByPriceRange(adList, num1, num2);
                     }
                     else if ( input1 == 3){
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         System.out.print("ENTER CITY\n>> ");
                         String string = scanner.nextLine();
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         PrintLists.printAdByCity(adList, string.toUpperCase());
                     }
                     else if ( input1 == 4){
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         System.out.print("SEARCH NAME\n>> ");
                         String string = scanner.nextLine();
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         PrintLists.printAdBySearch(adList, string);
 
                     }
                     else if ( input1 == 5){
                         System.out.print("ENTER ADS ID\n>> ");
                         String ads_id = scanner.nextLine();
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         if ( PrintLists.printAdDetails(adList, ads_id)){
                             System.out.print("1. ADD TO FAVORITES\n2. BACK\n>> ");
                             int input4 = scanner.nextInt();
@@ -162,17 +163,17 @@ public class ActionHandler {
                                 sendRequest(requestPacket1);
                             }
                         }
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         PrintLists.printAllAdList(adList);
                     }
                     else if ( input1 == 6){
                         adList = mainList;
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         PrintLists.printAllAdList(adList);
 
                     }
                     else if (input1 == 7){
-                        ClearScreen.clearScreen();
+                        JUI.clearScreen();
                         break;
                     }
                 }
@@ -210,16 +211,16 @@ public class ActionHandler {
                 RequestPacket requestPacket = new RequestPacket(RequestType.NEW_AD, advertisement);
                 sendRequest(requestPacket);
                 //test.add(advertisement); for test
-                ClearScreen.clearScreen();
+                JUI.clearScreen();
                 System.out.println(Colors.colorPrint(Colors.GREEN_BRIGHT, "ADVERTISEMENT WAS CREATED SUCCESSFULLY"));
             }
             else if ( input == 3){
-                ClearScreen.clearScreen();
+                JUI.clearScreen();
                 break;
 
             }
             else{
-                ClearScreen.clearScreen();
+                JUI.clearScreen();
                 System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
 
             }
