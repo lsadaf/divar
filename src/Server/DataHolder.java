@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class DataBase {
+public class DataHolder {
     private final static String initPath = "";
     private final static String usersFile = initPath + "users.json";
 
