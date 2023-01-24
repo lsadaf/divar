@@ -2,34 +2,45 @@ package DataTypes;
 
 import CLI.Colors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class Advertisement {
+public class Advertisement implements Serializable {
     private String creatorID;
     private String advertisementID;
     private String name;
     private String description;
-    private ArrayList<String> pics;
+    private String[] pics;
     private double price;
     private String location;
+    private String city;
     private String phone;
     private LocalDateTime lastUpdate;
     private boolean isPrioritized;
 
-    public Advertisement(String creatorID, String advertisementID, String name, String description, double price, String location, String phone, LocalDateTime lastUpdate, boolean isPrioritized) {
-        this.creatorID = creatorID;
-        this.advertisementID = advertisementID;
+    public Advertisement(String name, String description, double price, String city, String location, String phone, LocalDateTime lastUpdate,String[] pics,  boolean isPrioritized) {
         this.name = name;
-        this.pics = new ArrayList<>();
+        this.pics = pics;
         this.price = price;
         this.location = location;
         this.phone = phone;
         this.lastUpdate = lastUpdate;
         this.isPrioritized = isPrioritized;
         this.description = description;
+        if ( city != null){
+            this.city = city.toUpperCase();
+        }
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public String getDescription() {
         return description;
@@ -63,17 +74,8 @@ public class Advertisement {
         this.name = name;
     }
 
-    public ArrayList<String> getPics() {
+    public String[] getPics() {
         return pics;
-    }
-
-    public void addPic(String pic) {
-        this.pics.add(pic);
-    }
-    public void removePic (int index){
-        if ( index >= 0 && index < this.pics.size()){
-            this.pics.remove(index);
-        }
     }
 
     public double getPrice() {
@@ -117,6 +119,15 @@ public class Advertisement {
     }
 
     public String toString (){
-        return "ID = " + advertisementID + "\n" + Colors.colorPrint(Colors.WHITE_BOLD, name) + "\n" + price;
+        return "ID = " + advertisementID + "\n" + Colors.colorPrint(Colors.WHITE_BOLD_BRIGHT, name) + "\n" + price + "\n" + city;
+    }
+    public void printDetails (){
+        System.out.println("ID = " + advertisementID + "\n" + Colors.colorPrint(Colors.WHITE_BOLD_BRIGHT, name) + "\nPRICE = " + price);
+        System.out.println(description);
+        System.out.println("ADDRESS = " + city + ", " + location);
+        System.out.println("PHONE NUMBER = " + phone);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedDateTime = lastUpdate.format(formatter);
+        System.out.println("UPDATED " + formattedDateTime);
     }
 }
