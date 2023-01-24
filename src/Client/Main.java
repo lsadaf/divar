@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class Main {
     public static Socket socket;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         try {
             socket = new Socket("localhost", 4000);
         } catch (IOException e) {

@@ -1,9 +1,6 @@
 package DataTypes;
 
-import Exceptions.EmailInvalidException;
-import Exceptions.LoginFailedException;
-import Exceptions.PasswordInvalidException;
-import Exceptions.UsernameInvalidException;
+import Exceptions.*;
 import Server.DataBase;
 import com.google.gson.Gson;
 
@@ -17,21 +14,34 @@ public class User {
     private String password;
     private String email;
     private URL picture;
-    private String name;
-    private String lastName;
-    private long phoneNumber;
+    private String name="";
+    private String lastName="";
+    private String phoneNumber="";
 
     //setters and getters
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String username) throws UsernameInvalidException {
+        Pattern p2 = Pattern.compile("^[a-zA-Z0-9._]{4,}$");
+        Matcher m2 = p2.matcher(username);
+        if (m2.find()) {this.username = username;
+        } else throw new UsernameInvalidException("Username Invalid!");
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws PasswordInvalidException {
+        Pattern p3 = Pattern.compile("[a-zA-Z0-9._]{8}");
+        Matcher m3 = p3.matcher(password);
+        int checkA=0;
+        for (int i = 0; i < password.length(); i++) {
+            if (password.charAt(i)=='a'){
+                checkA++;
+            }
+        }
+        if (checkA>=2 && m3.find()){
+            this.password = password;
+        }else throw new PasswordInvalidException("Password Invalid!");
     }
 
     public String getPassword() {
@@ -46,8 +56,12 @@ public class User {
         return picture;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String email) throws EmailInvalidException {
+        Pattern p1 = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+        Matcher m1 = p1.matcher(email);
+        if (m1.find()){  this.email = email;}
+        else throw new EmailInvalidException("Email Invalid!");
     }
 
     public String getEmail() {
@@ -70,45 +84,22 @@ public class User {
         return lastName;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhoneNumber(String  phoneNumber) throws PhoneNumberInvalidException {
+        Pattern p1 = Pattern.compile("^09[0-9]{9}$");
+        Matcher m1 = p1.matcher(phoneNumber);
+        if (m1.find()){
+            this.phoneNumber = phoneNumber;
+        }else throw new PhoneNumberInvalidException("Phone number invalid!");
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
     public User(String username, String password, String email) throws Exception {
-        Pattern p1 = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
-        Matcher m1 = p1.matcher(email);
-        Pattern p2 = Pattern.compile("^[a-zA-Z0-9._]{4,}$");
-        Matcher m2 = p2.matcher(username);
-        Pattern p3 = Pattern.compile("");
-        Matcher m3 = p3.matcher(password);
-        boolean passCheck = false;
-        int checkA=0;
-        for (int i = 0; i < password.length(); i++) {
-            if (password.charAt(i)=='a'){
-                checkA++;
-            }
-        }
-        if (checkA>=2 && m3.find()){
-            passCheck = true;
-        }
-
-           if (!m1.find()) {
-               throw new EmailInvalidException("Email Invalid!");
-           }
-           if (!m2.find()) {
-               throw new UsernameInvalidException("Username Invalid!");
-           }
-           if (!passCheck) {
-               throw new PasswordInvalidException("Password Invalid!");
-           }
-        this.username = username;
-        this.password = password;
-        this.email = email;
+        setUsername(username);
+        setPassword(password);
+        setEmail(email);
     }
     public static User login(String username,String password) throws LoginFailedException {
         for (int i = 0; i < DataBase.getUsers().size(); i++) {

@@ -5,6 +5,9 @@ import Communication.RequestPacket;
 import Communication.RequestType;
 import Communication.ResponsePacket;
 import DataTypes.Advertisement;
+import DataTypes.User;
+import Exceptions.PhoneNumberInvalidException;
+import Server.DataBase;
 
 import java.awt.*;
 import java.io.Console;
@@ -20,7 +23,8 @@ public class ActionHandler {
     private final Scanner scanner;
     private final ObjectInputStream objectInputStream;
     private final ObjectOutputStream objectOutputStream;
-  //  ArrayList<Advertisement> test;
+    User user;
+    //  ArrayList<Advertisement> test;
 
     public ActionHandler(Socket socket) throws IOException {
         objectInputStream = new ObjectInputStream(socket.getInputStream());
@@ -39,34 +43,177 @@ public class ActionHandler {
         this.test = test;
     }*/
 
-    public void start (){
+    public void start() throws Exception {
+        firstMenu();
         printMenu();
     }
-
-    public void printMenu (){
+    public void firstMenu() throws InterruptedException {
         int input;
         JUI.clearScreen();
-        while (true){
-            System.out.print("1. PROFILE\n2. ADVERTISEMENT\n3. EXIT\n>> ");
+            System.out.print("1. SIGNUP\n2. LOGIN\n3. EXIT\n>> ");
             input = scanner.nextInt();
             scanner.nextLine();
-            if ( input == 1){
-                //todo
+            if (input == 1) {
+                signupMenu();
 
-            }
-            else if ( input == 2){
-                advertisementMenu();
-            }
-            else if ( input == 3){
+            } else if (input == 2) {
+                loginMenu();
+            } else if (input == 3) {
                 JUI.clearScreen();
                 System.out.println(Colors.colorPrint(Colors.GREEN, "Good luck!"));
                 return;
 
-            }
-            else{
+            } else {
                 JUI.clearScreen();
                 System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
 
+            }
+
+    }
+    public void printMenu() throws Exception {
+        int input;
+        JUI.clearScreen();
+        while (true) {
+            System.out.print("1. PROFILE\n2. ADVERTISEMENT\n3. EXIT\n>> ");
+            input = scanner.nextInt();
+            scanner.nextLine();
+            if (input == 1) {
+                printProfile();
+
+            } else if (input == 2) {
+                advertisementMenu();
+            } else if (input == 3) {
+                JUI.clearScreen();
+                System.out.println(Colors.colorPrint(Colors.GREEN, "Good luck!"));
+                return;
+
+            } else {
+                JUI.clearScreen();
+                System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
+
+            }
+
+        }
+    }
+
+    private void printProfile() throws Exception {
+        JUI.clearScreen();
+        while (true) {
+            while (true) {
+                JUI.changeColor(JUI.Colors.BOLD_GREEN);
+                System.out.println("PROFILE");
+                JUI.changeColor(JUI.Colors.DEFAULT);
+                System.out.print("1. USERNAME: "+user.getUsername()+"\n2. NAME: "+user.getName()+"\n3. LASTNAME: "+user.getLastName());
+                System.out.print("\n4. PHONE NUMBER: "+user.getName()+"\n5. EMAIL: "+user.getEmail());
+                if (user.getPicture() !=null) {System.out.print("\n6. PICTURE: "+user.getPicture()+"\nWHICH ONE TO CHANGE?\n>>");
+                }else System.out.print("\n6. PICTURE: NO PICTURE \n WHICH ONE TO CHANGE?\n>>");
+                int input = scanner.nextInt();
+                JUI.clearScreen();
+                try {
+                    switch (input){
+                        case 1:
+                            System.out.print("CHANGE USERNAME: \n>>");
+                            String a=scanner.nextLine();
+                            user.setUsername(a);
+                            break;
+                        case 2:
+                            System.out.print("CHANGE NAME: \n>>");
+                            String b=scanner.next();
+                            user.setName(b);
+                            break;
+                        case 3:
+                            System.out.print("CHANGE LASTNAME: \n>>");
+                            String c=scanner.nextLine();
+                            user.setLastName(c);
+                            break;
+                        case 4:
+                            System.out.print("CHANGE PHONE NUMBER: \n>>");
+                            String  d=scanner.next();
+                            user.setPhoneNumber(d);
+                            break;
+                        case 5:
+                            System.out.print("CHANGE EMAIL: \n>>");
+                            String  e=scanner.next();
+                            user.setEmail(e);
+                            break;
+                        case 6:
+                            //System.out.print("INSERT PICTURE: ");
+                            //String  e=scanner.next();
+                            //user.setEmail(e);
+                            //break;
+                        default:
+                    }
+                } catch (Exception e) {
+                    JUI.clearScreen();
+                    JUI.changeColor(JUI.Colors.RED);
+                    System.out.println(e.getMessage());
+                    JUI.sleep(3000);
+                    JUI.clearScreen();
+                    JUI.changeColor(JUI.Colors.DEFAULT);
+                }
+            }
+
+        }
+    }
+
+    public void signupMenu() throws InterruptedException {
+        JUI.clearScreen();
+        boolean f= true;
+        while (f) {
+            while (true) {
+                JUI.changeColor(JUI.Colors.BOLD_GREEN);
+                System.out.println("SIGNUP");
+                JUI.changeColor(JUI.Colors.DEFAULT);
+                System.out.println("USERNAME: ");
+                String username = scanner.nextLine();
+                System.out.println("PASSWORD: ");
+                String password = scanner.nextLine();
+                JUI.changeCursorPosition(4, 8);
+                System.out.println("EMAIL: ");
+                String email = scanner.nextLine();
+                try {
+                    user = new User(username, password, email);
+                    DataBase.addUser(user);
+                    f = false;
+                    break;
+
+                } catch (Exception e) {
+                    JUI.clearScreen();
+                    JUI.changeColor(JUI.Colors.RED);
+                    System.out.println(e.getMessage());
+                    JUI.sleep(3000);
+                    JUI.clearScreen();
+                    JUI.changeColor(JUI.Colors.DEFAULT);
+                }
+            }
+
+        }
+    }
+    public void loginMenu() throws InterruptedException {
+        JUI.clearScreen();
+        boolean f = true;
+        while (f) {
+            while (true) {
+                JUI.changeColor(JUI.Colors.BOLD_GREEN);
+                System.out.println("LOGIN");
+                JUI.changeColor(JUI.Colors.DEFAULT);
+                System.out.println("USERNAME:");
+                String username = scanner.nextLine();
+                System.out.println("PASSWORD:");
+                String password = scanner.nextLine();
+                try {
+                    user = User.login(username,password);
+                    f = false;
+                    break;
+
+                } catch (Exception e) {
+                    JUI.clearScreen();
+                    JUI.changeColor(JUI.Colors.RED);
+                    System.out.println(e.getMessage());
+                    JUI.sleep(3000);
+                    JUI.clearScreen();
+                    JUI.changeColor(JUI.Colors.DEFAULT);
+                }
             }
 
         }
