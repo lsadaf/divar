@@ -12,7 +12,7 @@ public class Server {
     static ServerSocket serverSocket;
     public static void main(String[] args) throws IOException {
         serverSocket = new ServerSocket(4000);
-        DataHolder dataHolder = new DataHolder();
+        DataBase dataHolder = new DataBase();
         //dataHolder.advertisements = new ArrayList<>(); for test
        /* ArrayList<Advertisement> advertisements = new ArrayList<>(); test
         advertisements.add(new Advertisement( "Book", "This is test 1 for advertisements", 18.99, "Tehran", "abc, def, ghi", "number", LocalDateTime.of(2000, 10, 23, 20, 45),null, false));

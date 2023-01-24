@@ -1,6 +1,7 @@
 package DataTypes;
 
 import CLI.Colors;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -32,6 +33,14 @@ public class Advertisement implements Serializable {
         if ( city != null){
             this.city = city.toUpperCase();
         }
+    }
+
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
+    public static User fromJson(String json) {
+        return new Gson().fromJson(json, User.class);
     }
 
     public String getCity() {

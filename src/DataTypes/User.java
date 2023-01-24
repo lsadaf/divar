@@ -4,6 +4,7 @@ import Exceptions.EmailInvalidException;
 import Exceptions.LoginFailedException;
 import Exceptions.PasswordInvalidException;
 import Exceptions.UsernameInvalidException;
+import Server.DataBase;
 import com.google.gson.Gson;
 
 import java.net.MalformedURLException;

@@ -1,5 +1,6 @@
 package Server;
 
+import DataTypes.Advertisement;
 import DataTypes.User;
 import Exceptions.*;
 

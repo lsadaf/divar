@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
-    static DataHolder data;
+    static DataBase data;
     private Socket socket;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
@@ -28,7 +28,7 @@ public class ClientHandler implements Runnable {
             try {
                 requestPacket = (RequestPacket) objectInputStream.readObject();
                 if ( requestPacket.getRequestType() == RequestType.GET_ALL_ADS){
-                    ResponsePacket responsePacket = new ResponsePacket(data.advertisements);
+                    ResponsePacket responsePacket = new ResponsePacket(requestPacket.getData());
                     sendResponse(responsePacket);
                 }
                 if ( requestPacket.getRequestType() == RequestType.NEW_AD){
@@ -49,7 +49,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public static void setData (DataHolder newData){
+    public static void setData (DataBase newData){
         data = newData;
     }
 }
