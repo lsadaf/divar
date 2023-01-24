@@ -1,6 +1,8 @@
 package Communication;
 
-public enum RequestType {
+import java.io.Serializable;
+
+public enum RequestType implements Serializable {
 
     CHECK_USER,
     USER_LOGIN,
@@ -12,8 +14,9 @@ public enum RequestType {
     USER_NEW_PASS,
 
     NEW_AD,
-    EDIT_AD,
+    ADD_AD_TO_FAVORITES,
+    GET_FAVORITE_ADS,
+    REMOVE_AD_FROM_FAVORITES,
 
-    GET_ALL_ADS,
-    GET_TARGET_AD;
+    GET_ALL_ADS;
 }
