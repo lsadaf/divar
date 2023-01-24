@@ -1,7 +1,6 @@
 package Server;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
@@ -17,7 +16,12 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        //get Communication packages from client and handle each command
+        try(DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            DataOutputStream out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()))){
+            //request and response here
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /*public static void setData (DataBase newData){

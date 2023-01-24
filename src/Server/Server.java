@@ -1,5 +1,6 @@
 package Server;
 
+import Client.ActionHandler;
 import DataTypes.User;
 
 import java.io.IOException;
@@ -35,32 +36,10 @@ public class Server implements Runnable {
             Socket socket;
             while (true) {
                 socket = server.accept();
-                new Thread(new DivarRunnable(socket)).start();
+                new Thread((Runnable) new ActionHandler(socket)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-}
-
-class DivarRunnable implements Runnable{
-    private Socket socket;
-
-    public DivarRunnable(Socket socket) {
-        this.socket = socket;
-    }
-
-    @Override
-    public void run() {
-        try(DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            DataOutputStream out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()))){
-            String message;
-            String response = "";
-            message = in.readUTF();
-            out.writeUTF(response);
-            out.flush();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
     }
 }
