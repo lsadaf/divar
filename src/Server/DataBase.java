@@ -38,6 +38,8 @@ public class DataBase {
         }
         return users;
     }
+    
+    public static ArrayList<Advertisement> advertisements;
 
     public static void addUser(User user) throws UserAlreadyExists {
         ArrayList<User> users = getUsers();
