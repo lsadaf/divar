@@ -48,8 +48,12 @@ public class User {
         return password;
     }
 
-    public void setPicture(String picture) throws MalformedURLException {
-        this.picture = new URL(picture);
+    public void setPicture(String picture) throws PictureInvalidException, MalformedURLException {
+        Pattern p =Pattern.compile("^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$");
+        Matcher m =p.matcher(picture);
+        if (m.find()){
+            this.picture = new URL(picture);
+        }else throw new PictureInvalidException("Picture Invallid!");
     }
 
     public URL getPicture() {

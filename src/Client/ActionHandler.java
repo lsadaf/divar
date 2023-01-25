@@ -45,9 +45,8 @@ public class ActionHandler {
 
     public void start() throws Exception {
         firstMenu();
-        printMenu();
     }
-    public void firstMenu() throws InterruptedException {
+    public void firstMenu() throws Exception {
         int input;
         JUI.clearScreen();
             System.out.print("1. SIGNUP\n2. LOGIN\n3. EXIT\n>> ");
@@ -103,60 +102,79 @@ public class ActionHandler {
                 JUI.changeColor(JUI.Colors.BOLD_GREEN);
                 System.out.println("PROFILE");
                 JUI.changeColor(JUI.Colors.DEFAULT);
-                System.out.print("1. USERNAME: "+user.getUsername()+"\n2. NAME: "+user.getName()+"\n3. LASTNAME: "+user.getLastName());
-                System.out.print("\n4. PHONE NUMBER: "+user.getName()+"\n5. EMAIL: "+user.getEmail());
-                if (user.getPicture() !=null) {System.out.print("\n6. PICTURE: "+user.getPicture()+"\nWHICH ONE TO CHANGE?\n>>");
-                }else System.out.print("\n6. PICTURE: NO PICTURE \n WHICH ONE TO CHANGE?\n>>");
+                System.out.print("1. USERNAME: " + user.getUsername() + "\n2. NAME: " + user.getName() + "\n3. LASTNAME: " + user.getLastName());
+                System.out.print("\n4. PHONE NUMBER: " + user.getPhoneNumber() + "\n5. EMAIL: " + user.getEmail());
+                if (user.getPicture() != null) {
+                    System.out.print("\n6. PICTURE: " + user.getPicture() + "\n7. EXIT\n");
+                } else System.out.print("\n6. PICTURE: NO PICTURE\n");
+                System.out.print(Colors.colorPrint(Colors.GREEN, "WHICH ONE TO CHANGE(ANY OTHER TO GO BACK)? \n"));
+                System.out.print("\n>> ");
                 int input = scanner.nextInt();
                 JUI.clearScreen();
-                try {
-                    switch (input){
-                        case 1:
-                            System.out.print("CHANGE USERNAME: \n>>");
-                            String a=scanner.nextLine();
-                            user.setUsername(a);
-                            break;
-                        case 2:
-                            System.out.print("CHANGE NAME: \n>>");
-                            String b=scanner.next();
-                            user.setName(b);
-                            break;
-                        case 3:
-                            System.out.print("CHANGE LASTNAME: \n>>");
-                            String c=scanner.nextLine();
-                            user.setLastName(c);
-                            break;
-                        case 4:
-                            System.out.print("CHANGE PHONE NUMBER: \n>>");
-                            String  d=scanner.next();
-                            user.setPhoneNumber(d);
-                            break;
-                        case 5:
-                            System.out.print("CHANGE EMAIL: \n>>");
-                            String  e=scanner.next();
-                            user.setEmail(e);
-                            break;
-                        case 6:
-                            //System.out.print("INSERT PICTURE: ");
-                            //String  e=scanner.next();
-                            //user.setEmail(e);
-                            //break;
-                        default:
+                boolean flag = true;
+                while (flag) {
+                    try {
+                        switch (input) {
+                            case 1:
+                                System.out.print("CHANGE USERNAME: \n>> ");
+                                String a = scanner.next();
+                                user.setUsername(a);
+                                flag = false;
+                                break;
+                            case 2:
+                                System.out.print("CHANGE NAME: \n>> ");
+                                String b = scanner.next();
+                                user.setName(b);
+                                flag = false;
+                                break;
+                            case 3:
+                                System.out.print("CHANGE LASTNAME: \n>> ");
+                                String c = scanner.next();
+                                user.setLastName(c);
+                                flag = false;
+                                break;
+                            case 4:
+                                System.out.print("CHANGE PHONE NUMBER: \n>> ");
+                                String d = scanner.next();
+                                user.setPhoneNumber(d);
+                                flag = false;
+                                break;
+                            case 5:
+                                System.out.print("CHANGE EMAIL: \n>> ");
+                                String e = scanner.next();
+                                user.setEmail(e);
+                                flag = false;
+                                break;
+                            case 6:
+                                System.out.print("INSERT PICTURE: \n>> ");
+                                String f = scanner.next();
+                                user.setPicture(f);
+                                flag = false;
+                                break;
+                            case 7:
+
+                                break;
+                            default:
+                                JUI.clearScreen();
+                                System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
+                                JUI.sleep(3000);
+                                break;
+                        }
+                    } catch (Exception e) {
+                        JUI.clearScreen();
+                        JUI.changeColor(JUI.Colors.RED);
+                        System.out.println(e.getMessage());
+                        JUI.sleep(3000);
+                        JUI.clearScreen();
+                        JUI.changeColor(JUI.Colors.DEFAULT);
                     }
-                } catch (Exception e) {
-                    JUI.clearScreen();
-                    JUI.changeColor(JUI.Colors.RED);
-                    System.out.println(e.getMessage());
-                    JUI.sleep(3000);
-                    JUI.clearScreen();
-                    JUI.changeColor(JUI.Colors.DEFAULT);
                 }
             }
 
         }
     }
 
-    public void signupMenu() throws InterruptedException {
+    public void signupMenu() throws Exception {
         JUI.clearScreen();
         boolean f= true;
         while (f) {
@@ -164,12 +182,11 @@ public class ActionHandler {
                 JUI.changeColor(JUI.Colors.BOLD_GREEN);
                 System.out.println("SIGNUP");
                 JUI.changeColor(JUI.Colors.DEFAULT);
-                System.out.println("USERNAME: ");
+                System.out.print("USERNAME: \n>> ");
                 String username = scanner.nextLine();
-                System.out.println("PASSWORD: ");
+                System.out.print("PASSWORD: \n>> ");
                 String password = scanner.nextLine();
-                JUI.changeCursorPosition(4, 8);
-                System.out.println("EMAIL: ");
+                System.out.print("EMAIL: \n>> ");
                 String email = scanner.nextLine();
                 try {
                     user = new User(username, password, email);
@@ -186,10 +203,11 @@ public class ActionHandler {
                     JUI.changeColor(JUI.Colors.DEFAULT);
                 }
             }
+            printMenu();
 
         }
     }
-    public void loginMenu() throws InterruptedException {
+    public void loginMenu() throws Exception {
         JUI.clearScreen();
         boolean f = true;
         while (f) {
@@ -197,9 +215,9 @@ public class ActionHandler {
                 JUI.changeColor(JUI.Colors.BOLD_GREEN);
                 System.out.println("LOGIN");
                 JUI.changeColor(JUI.Colors.DEFAULT);
-                System.out.println("USERNAME:");
+                System.out.print("USERNAME: \n>> ");
                 String username = scanner.nextLine();
-                System.out.println("PASSWORD:");
+                System.out.print("PASSWORD: \n>> ");
                 String password = scanner.nextLine();
                 try {
                     user = User.login(username,password);
@@ -215,6 +233,7 @@ public class ActionHandler {
                     JUI.changeColor(JUI.Colors.DEFAULT);
                 }
             }
+            printMenu();
 
         }
     }
