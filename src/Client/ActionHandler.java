@@ -49,6 +49,7 @@ public class ActionHandler {
     public void firstMenu() throws Exception {
         int input;
         JUI.clearScreen();
+        while (true){
             System.out.print("1. SIGNUP\n2. LOGIN\n3. EXIT\n>> ");
             input = scanner.nextInt();
             scanner.nextLine();
@@ -67,6 +68,7 @@ public class ActionHandler {
                 System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
 
             }
+        }
 
     }
     public void printMenu() throws Exception {
@@ -91,7 +93,6 @@ public class ActionHandler {
                 System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
 
             }
-
         }
     }
 
@@ -241,18 +242,18 @@ public class ActionHandler {
         int input;
         while(true){
             JUI.clearScreen();
-            System.out.print("1. ADVERTISEMENT LIST\n2. ADD NEW ADVERTISEMENT\n3. BACK\n>> ");
+            System.out.print("1. ADVERTISEMENT LIST\n2. ADD NEW ADVERTISEMENT\n3. FAVORITE ADVERTISEMENTS\n4. BACK\n>> ");
             input = scanner.nextInt();
             scanner.nextLine();
             JUI.clearScreen();
             if ( input == 1){
-                    RequestPacket requestPacket = new RequestPacket(RequestType.GET_ALL_ADS, null);
-                    sendRequest(requestPacket);
-                    ResponsePacket responsePacket = getResponse();
-                    ArrayList<Advertisement> mainList = (ArrayList<Advertisement>) responsePacket.getInitialData();
-                   // ArrayList<Advertisement> mainList = test; for test
-                    ArrayList<Advertisement> adList = mainList;
-                    PrintLists.printAllAdList(adList);
+                RequestPacket requestPacket = new RequestPacket(RequestType.GET_ALL_ADS, null);
+                sendRequest(requestPacket);
+                ResponsePacket responsePacket = getResponse();
+                ArrayList<Advertisement> mainList = (ArrayList<Advertisement>) responsePacket.getInitialData();
+                // ArrayList<Advertisement> mainList = test; for test
+                ArrayList<Advertisement> adList = mainList;
+                PrintLists.printAllAdList(adList);
                 while (true){
                     System.out.print("1. SORT\n2. FILTER PRICE RANGE\n3. FILTER CITY\n4. SEARCH\n5. VIEW DETAILS\n6. RESET FILTERS\n7. BACK\n>> ");
                     int input1 = scanner.nextInt();
@@ -325,7 +326,8 @@ public class ActionHandler {
                             int input4 = scanner.nextInt();
                             scanner.nextLine();
                             if ( input4 == 1){
-                                RequestPacket requestPacket1 = new RequestPacket(RequestType.ADD_AD_TO_FAVORITES, ads_id);
+                                RequestPacket requestPacket1 = new RequestPacket(RequestType.ADD_AD_TO_FAVORITES, ads_id + "; " + user.getUsername());
+                                user.getFavoriteAds().add(ads_id);
                                 sendRequest(requestPacket1);
                             }
                         }
@@ -381,6 +383,28 @@ public class ActionHandler {
                 System.out.println(Colors.colorPrint(Colors.GREEN_BRIGHT, "ADVERTISEMENT WAS CREATED SUCCESSFULLY"));
             }
             else if ( input == 3){
+                while (true){
+                    RequestPacket requestPacket = new RequestPacket(RequestType.GET_FAVORITE_ADS, user.getUsername());
+                    sendRequest(requestPacket);
+                    ResponsePacket responsePacket = getResponse();
+                    ArrayList<Advertisement> favoriteAds = (ArrayList<Advertisement>) responsePacket.getInitialData();
+                    PrintLists.printAllAdList(favoriteAds);
+                    System.out.print("1. REMOVE AN ADVERTISEMENT\n2. BACK\n>> ");
+                    int input6 = scanner.nextInt();
+                    scanner.nextLine();
+                    if ( input6 == 1){
+                        System.out.print("ENTER ADS ID\n>> ");
+                        String id = scanner.nextLine();
+                        RequestPacket requestPacket1 = new RequestPacket(RequestType.REMOVE_AD_FROM_FAVORITES, id);
+                        sendRequest(requestPacket1);
+                        JUI.clearScreen();
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+            else if ( input == 4){
                 JUI.clearScreen();
                 break;
 
@@ -410,4 +434,5 @@ public class ActionHandler {
         }
         return responsePacket;
     }
+
 }
