@@ -1,3 +1,4 @@
+
 package Server;
 
 import DataTypes.Advertisement;
@@ -14,11 +15,22 @@ import java.util.Scanner;
 public class DataBase {
     private final static String initPath = "";
     private final static String usersFile = initPath + "users.json";
+    private final static String adsFile = initPath + "ads.json";
 
-    private static void saveUsers(ArrayList<User> users) {
+
+    public static void saveUsers(ArrayList<User> users) {
         try (FileWriter fileWriter = new FileWriter(usersFile)){
             for (User user : users)
                 fileWriter.write(user.toJson() + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveAds(ArrayList<Advertisement> advertisements) {
+        try (FileWriter fileWriter = new FileWriter(adsFile)){
+            for (Advertisement advertisement : advertisements)
+                fileWriter.write(advertisement.toJson() + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,8 +50,21 @@ public class DataBase {
         }
         return users;
     }
-    
-    public static ArrayList<Advertisement> advertisements;
+
+    public static ArrayList<Advertisement> getAds() {
+        ArrayList<Advertisement> ads = new ArrayList<>();
+        try (Scanner scanner = new Scanner(new File(adsFile))){
+            while (scanner.hasNextLine())
+                ads.add(Advertisement.fromJson(scanner.nextLine()));
+        } catch (FileNotFoundException e) {
+            try (FileWriter fileWriter = new FileWriter(adsFile)) {
+                fileWriter.write("");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return users;
+    }
 
     public static void addUser(User user) throws UserAlreadyExists {
         ArrayList<User> users = getUsers();
@@ -55,4 +80,11 @@ public class DataBase {
         saveUsers(users);
     }
 
+    public static void addAdvertisement(Advertisement advertisement){
+        ArrayList<Advertisement> advertisements = get();
+        if (!users.contains(user)){
+            users.add(user);
+        }else throw new UserAlreadyExists("User already exists!");
+        saveUsers(users);
+    }
 }
