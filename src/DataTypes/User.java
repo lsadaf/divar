@@ -31,7 +31,7 @@ public class User {
     }
 
     public void setPassword(String password) throws PasswordInvalidException {
-        Pattern p3 = Pattern.compile("[a-zA-Z0-9._]{8}");
+        Pattern p3 = Pattern.compile("(?=[a-z0-9]+$)^(?=.*[a-z])(?=.*[0-9])(?=.{8,}).*$",Pattern.CASE_INSENSITIVE);
         Matcher m3 = p3.matcher(password);
         int checkA=0;
         for (int i = 0; i < password.length(); i++) {
