@@ -35,7 +35,6 @@ public class ClientHandler implements Runnable {
                 }
                 else if ( requestPacket.getRequestType() == RequestType.NEW_AD){
                     Advertisement advertisement = (Advertisement) requestPacket.getData();
-                    advertisement.setCreatorID("CREATOR ID...");
                     advertisement.setAdvertisementID((DataBase.getAds().size() + 1) + "");
                     DataBase.addAdvertisement(advertisement);
                 }
@@ -102,4 +101,5 @@ public class ClientHandler implements Runnable {
         }
         return null;
     }
+
 }
