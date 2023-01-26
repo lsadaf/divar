@@ -326,7 +326,7 @@ public class ActionHandler {
                             int input4 = scanner.nextInt();
                             scanner.nextLine();
                             if ( input4 == 1){
-                                RequestPacket requestPacket1 = new RequestPacket(RequestType.ADD_AD_TO_FAVORITES, ads_id + "; " + user.getUsername());
+                                RequestPacket requestPacket1 = new RequestPacket(RequestType.ADD_AD_TO_FAVORITES, ads_id + "; " + user.getUsername());//data : 2; Ali
                                 user.getFavoriteAds().add(ads_id);
                                 sendRequest(requestPacket1);
                             }
@@ -395,8 +395,9 @@ public class ActionHandler {
                     if ( input6 == 1){
                         System.out.print("ENTER ADS ID\n>> ");
                         String id = scanner.nextLine();
-                        RequestPacket requestPacket1 = new RequestPacket(RequestType.REMOVE_AD_FROM_FAVORITES, id);
+                        RequestPacket requestPacket1 = new RequestPacket(RequestType.REMOVE_AD_FROM_FAVORITES, id + "; " +user.getUsername());
                         sendRequest(requestPacket1);
+                        user.getFavoriteAds().remove(id);
                         JUI.clearScreen();
                     }
                     else{
