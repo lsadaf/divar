@@ -39,8 +39,8 @@ public class Advertisement implements Serializable {
         return new Gson().toJson(this);
     }
 
-    public static User fromJson(String json) {
-        return new Gson().fromJson(json, User.class);
+    public static Advertisement fromJson(String json) {
+        return new Gson().fromJson(json, Advertisement.class);
     }
 
     public String getCity() {

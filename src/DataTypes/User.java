@@ -1,3 +1,4 @@
+
 package DataTypes;
 
 import Exceptions.*;
@@ -6,40 +7,46 @@ import com.google.gson.Gson;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.regex.*;
 
 public class User {
-    private String username;
-    private String password;
-    private String email;
+    private String username="";
+    private String password="";
+    private String email="";
     private URL picture;
     private String name="";
     private String lastName="";
-    private ArrayList<String> favoriteAds = new ArrayList<>();
     private String phoneNumber="";
+    private ArrayList<String> favoriteAds = new ArrayList<>();
 
     //setters and getters
-    public void setUsername(String username) throws UsernameInvalidException {
+    public void setUsername(String username) throws UsernameInvalidException, UserAlreadyExists {
         Pattern p2 = Pattern.compile("^[a-zA-Z0-9._]{4,}$");
         Matcher m2 = p2.matcher(username);
-        if (m2.find()) {this.username = username;
+        if (m2.find()) {
+            if (DataBase.getUsers().contains(this)){
+                DataBase.removeUser(this);
+                this.username = username;
+                DataBase.addUser(this);
+            }else this.username = username;
         } else throw new UsernameInvalidException("Username Invalid!");
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setFavoriteAds(ArrayList<String> favoriteAds) {
+        this.favoriteAds = favoriteAds;
     }
 
     public ArrayList<String> getFavoriteAds() {
         return favoriteAds;
     }
-    public void setFavoriteAds(ArrayList<String> favoriteAds) {
-        this.favoriteAds = favoriteAds;
-    }
-    
-    public String getUsername() {
-        return username;
-    }
 
-    public void setPassword(String password) throws PasswordInvalidException {
+    public void setPassword(String password) throws PasswordInvalidException, UserAlreadyExists {
         Pattern p3 = Pattern.compile("(?=[a-z0-9]+$)^(?=.*[a-z])(?=.*[0-9])(?=.{8,}).*$",Pattern.CASE_INSENSITIVE);
         Matcher m3 = p3.matcher(password);
         int checkA=0;
@@ -49,7 +56,12 @@ public class User {
             }
         }
         if (checkA>=2 && m3.find()){
-            this.password = password;
+            if (DataBase.getUsers().contains(this)){
+                DataBase.removeUser(this);
+                this.password = password;
+                DataBase.addUser(this);
+            }else this.password = password;
+
         }else throw new PasswordInvalidException("Password Invalid!");
     }
 
@@ -57,11 +69,15 @@ public class User {
         return password;
     }
 
-    public void setPicture(String picture) throws PictureInvalidException, MalformedURLException {
+    public void setPicture(String picture) throws PictureInvalidException, MalformedURLException, UserAlreadyExists {
         Pattern p =Pattern.compile("^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$");
         Matcher m =p.matcher(picture);
         if (m.find()){
+            if (DataBase.getUsers().contains(this)) {
+                DataBase.removeUser(this);
+            }
             this.picture = new URL(picture);
+            DataBase.addUser(this);
         }else throw new PictureInvalidException("Picture Invallid!");
     }
 
@@ -69,11 +85,17 @@ public class User {
         return picture;
     }
 
-    public void setEmail(String email) throws EmailInvalidException {
+    public void setEmail(String email) throws EmailInvalidException, UserAlreadyExists {
         Pattern p1 = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
         Matcher m1 = p1.matcher(email);
-        if (m1.find()){  this.email = email;}
+        if (m1.find()){
+            if (DataBase.getUsers().contains(this)){
+                DataBase.removeUser(this);
+                this.email = email;
+                DataBase.addUser(this);
+            }else this.email = email;
+        }
         else throw new EmailInvalidException("Email Invalid!");
     }
 
@@ -81,27 +103,39 @@ public class User {
         return email;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws UserAlreadyExists {
+        if (DataBase.getUsers().contains(this)) {
+            DataBase.removeUser(this);
+        }
         this.name = name;
+        DataBase.addUser(this);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName) throws UserAlreadyExists {
+        if (DataBase.getUsers().contains(this)) {
+            DataBase.removeUser(this);
+        }
         this.lastName = lastName;
+        DataBase.addUser(this);
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setPhoneNumber(String  phoneNumber) throws PhoneNumberInvalidException {
+    public void setPhoneNumber(String  phoneNumber) throws PhoneNumberInvalidException, UserAlreadyExists {
         Pattern p1 = Pattern.compile("^09[0-9]{9}$");
         Matcher m1 = p1.matcher(phoneNumber);
         if (m1.find()){
+            if (DataBase.getUsers().contains(this)) {
+                DataBase.removeUser(this);
+            }
             this.phoneNumber = phoneNumber;
+            DataBase.addUser(this);
         }else throw new PhoneNumberInvalidException("Phone number invalid!");
     }
 
@@ -142,3 +176,4 @@ public class User {
     public int hashCode() {
         return Objects.hash(username, email);
     }
+}

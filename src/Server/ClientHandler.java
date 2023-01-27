@@ -2,6 +2,7 @@ package Server;
 
 import DataTypes.*;
 import Communication.*;
+import Exceptions.AdvertismentAlreadyExists;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
@@ -30,14 +31,21 @@ public class ClientHandler implements Runnable {
             RequestPacket requestPacket = null;
             try {
                 requestPacket = (RequestPacket) objectInputStream.readObject();
-                if ( requestPacket.getRequestType() == RequestType.GET_ALL_ADS){
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            if ( requestPacket.getRequestType() == RequestType.GET_ALL_ADS){
                     ResponsePacket responsePacket = new ResponsePacket(DataBase.getAds());
                     sendResponse(responsePacket);
                 }
                 else if ( requestPacket.getRequestType() == RequestType.NEW_AD){
                     Advertisement advertisement = (Advertisement) requestPacket.getData();
                     advertisement.setAdvertisementID((DataBase.getAds().size() + 1) + "");
-                    DataBase.addAdvertisement(advertisement);
+                    try {
+                        DataBase.addAdvertisement(advertisement);
+                    } catch (AdvertismentAlreadyExists e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
                 else if ( requestPacket.getRequestType() == RequestType.ADD_AD_TO_FAVORITES){
                     String[] requestSplit = ((String)requestPacket.getData()).split("; "); //requestSplit[0] = adId , requestSplit[1] userId
@@ -70,11 +78,8 @@ public class ClientHandler implements Runnable {
                     DataBase.saveUsers(users);
 
                 }
-            } catch (IOException | ClassNotFoundException ignored) {
-
             }
         }
-    }
     public void sendResponse (ResponsePacket responsePacket){
         try {
             objectOutputStream.writeUnshared(responsePacket);

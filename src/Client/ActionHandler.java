@@ -49,25 +49,23 @@ public class ActionHandler {
     public void firstMenu() throws Exception {
         int input;
         JUI.clearScreen();
-        while (true){
-            System.out.print("1. SIGNUP\n2. LOGIN\n3. EXIT\n>> ");
-            input = scanner.nextInt();
-            scanner.nextLine();
-            if (input == 1) {
-                signupMenu();
+        System.out.print("1. SIGNUP\n2. LOGIN\n3. EXIT\n>> ");
+        input = scanner.nextInt();
+        scanner.nextLine();
+        if (input == 1) {
+            signupMenu();
 
-            } else if (input == 2) {
-                loginMenu();
-            } else if (input == 3) {
-                JUI.clearScreen();
-                System.out.println(Colors.colorPrint(Colors.GREEN, "Good luck!"));
-                return;
+        } else if (input == 2) {
+            loginMenu();
+        } else if (input == 3) {
+            JUI.clearScreen();
+            System.out.println(Colors.colorPrint(Colors.GREEN, "Good luck!"));
+            return;
 
-            } else {
-                JUI.clearScreen();
-                System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
+        } else {
+            JUI.clearScreen();
+            System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
 
-            }
         }
 
     }
@@ -93,6 +91,7 @@ public class ActionHandler {
                 System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
 
             }
+
         }
     }
 
@@ -152,14 +151,8 @@ public class ActionHandler {
                                 user.setPicture(f);
                                 flag = false;
                                 break;
-                            case 7:
-
-                                break;
                             default:
-                                JUI.clearScreen();
-                                System.out.println(Colors.colorPrint(Colors.RED, "INVALID INPUT!"));
-                                JUI.sleep(3000);
-                                break;
+                                return;
                         }
                     } catch (Exception e) {
                         JUI.clearScreen();
@@ -242,7 +235,7 @@ public class ActionHandler {
         int input;
         while(true){
             JUI.clearScreen();
-            System.out.print("1. ADVERTISEMENT LIST\n2. ADD NEW ADVERTISEMENT\n3. FAVORITE ADVERTISEMENTS\n4. BACK\n>> ");
+            System.out.print("1. ADVERTISEMENT LIST\n2. ADD NEW ADVERTISEMENT\n3. BACK\n>> ");
             input = scanner.nextInt();
             scanner.nextLine();
             JUI.clearScreen();
@@ -326,8 +319,7 @@ public class ActionHandler {
                             int input4 = scanner.nextInt();
                             scanner.nextLine();
                             if ( input4 == 1){
-                                RequestPacket requestPacket1 = new RequestPacket(RequestType.ADD_AD_TO_FAVORITES, ads_id + "; " + user.getUsername());//data : 2; Ali
-                                user.getFavoriteAds().add(ads_id);
+                                RequestPacket requestPacket1 = new RequestPacket(RequestType.ADD_AD_TO_FAVORITES, ads_id);
                                 sendRequest(requestPacket1);
                             }
                         }
@@ -383,29 +375,6 @@ public class ActionHandler {
                 System.out.println(Colors.colorPrint(Colors.GREEN_BRIGHT, "ADVERTISEMENT WAS CREATED SUCCESSFULLY"));
             }
             else if ( input == 3){
-                while (true){
-                    RequestPacket requestPacket = new RequestPacket(RequestType.GET_FAVORITE_ADS, user.getUsername());
-                    sendRequest(requestPacket);
-                    ResponsePacket responsePacket = getResponse();
-                    ArrayList<Advertisement> favoriteAds = (ArrayList<Advertisement>) responsePacket.getInitialData();
-                    PrintLists.printAllAdList(favoriteAds);
-                    System.out.print("1. REMOVE AN ADVERTISEMENT\n2. BACK\n>> ");
-                    int input6 = scanner.nextInt();
-                    scanner.nextLine();
-                    if ( input6 == 1){
-                        System.out.print("ENTER ADS ID\n>> ");
-                        String id = scanner.nextLine();
-                        RequestPacket requestPacket1 = new RequestPacket(RequestType.REMOVE_AD_FROM_FAVORITES, id + "; " +user.getUsername());
-                        sendRequest(requestPacket1);
-                        user.getFavoriteAds().remove(id);
-                        JUI.clearScreen();
-                    }
-                    else{
-                        break;
-                    }
-                }
-            }
-            else if ( input == 4){
                 JUI.clearScreen();
                 break;
 
@@ -435,5 +404,4 @@ public class ActionHandler {
         }
         return responsePacket;
     }
-
 }

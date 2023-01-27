@@ -1,4 +1,3 @@
-
 package Server;
 
 import DataTypes.Advertisement;
@@ -63,7 +62,7 @@ public class DataBase {
                 ex.printStackTrace();
             }
         }
-        return users;
+        return ads;
     }
 
     public static void addUser(User user) throws UserAlreadyExists {
@@ -80,11 +79,11 @@ public class DataBase {
         saveUsers(users);
     }
 
-    public static void addAdvertisement(Advertisement advertisement){
-        ArrayList<Advertisement> advertisements = get();
-        if (!users.contains(user)){
-            users.add(user);
-        }else throw new UserAlreadyExists("User already exists!");
-        saveUsers(users);
+    public static void addAdvertisement(Advertisement advertisement) throws AdvertismentAlreadyExists {
+        ArrayList<Advertisement> advertisements = getAds();
+        if (!advertisements.contains(advertisement)){
+            advertisements.add(advertisement);
+        }else throw new AdvertismentAlreadyExists("Advertisement already exists!");
+        saveAds(advertisements);
     }
 }
