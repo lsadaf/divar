@@ -13,6 +13,7 @@ import java.util.Iterator;
 
 public class ClientHandler implements Runnable {
     static DataBase data;
+    private final Socket socket;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
 
