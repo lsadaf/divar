@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.ArrayList;
 import java.util.regex.*;
 
 public class User {
@@ -16,6 +17,7 @@ public class User {
     private URL picture;
     private String name="";
     private String lastName="";
+    private ArrayList<String> favoriteAds = new ArrayList<>();
     private String phoneNumber="";
 
     //setters and getters
@@ -133,4 +135,3 @@ public class User {
     public int hashCode() {
         return Objects.hash(username, email);
     }
-}
