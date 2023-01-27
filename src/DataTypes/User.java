@@ -28,6 +28,13 @@ public class User {
         } else throw new UsernameInvalidException("Username Invalid!");
     }
 
+    public ArrayList<String> getFavoriteAds() {
+        return favoriteAds;
+    }
+    public void setFavoriteAds(ArrayList<String> favoriteAds) {
+        this.favoriteAds = favoriteAds;
+    }
+    
     public String getUsername() {
         return username;
     }
