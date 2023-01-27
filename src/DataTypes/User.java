@@ -16,6 +16,7 @@ public class User {
     private URL picture;
     private String name="";
     private String lastName="";
+    private ArrayList<String> favoriteAds = new ArrayList<>();
     private String phoneNumber="";
 
     //setters and getters
