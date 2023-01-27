@@ -241,11 +241,7 @@ public class ActionHandler {
             scanner.nextLine();
             JUI.clearScreen();
             if ( input == 1){
-                RequestPacket requestPacket = new RequestPacket(RequestType.GET_ALL_ADS, null);
-                sendRequest(requestPacket);
-                ResponsePacket responsePacket = getResponse();
                 ArrayList<Advertisement> mainList = DataBase.getAds();
-                // ArrayList<Advertisement> mainList = test; for test
                 ArrayList<Advertisement> adList = mainList;
                 PrintLists.printAllAdList(adList);
                 while (true){
